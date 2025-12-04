@@ -2,11 +2,11 @@
   {
     "ramal": "387",
     "nome": "Raiane Mendes",
-    "status": "Indisponivel",
-    "cor": "danger",
+    "status": "Disponivel",
+    "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "15:12"
+    "atualizado": "15:25"
   },
   {
     "ramal": "382",
@@ -15,7 +15,7 @@
     "cor": "danger",
     "rx": "0",
     "tx": "0",
-    "atualizado": "15:12"
+    "atualizado": "15:25"
   },
   {
     "ramal": "383",
@@ -24,16 +24,16 @@
     "cor": "danger",
     "rx": "0",
     "tx": "0",
-    "atualizado": "15:12"
+    "atualizado": "15:25"
   },
   {
     "ramal": "388",
     "nome": "Gabriel Paixão",
-    "status": "Indisponivel",
-    "cor": "danger",
+    "status": "Disponivel",
+    "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "15:12"
+    "atualizado": "15:25"
   },
   {
     "ramal": "373",
@@ -42,15 +42,15 @@
     "cor": "danger",
     "rx": "0",
     "tx": "0",
-    "atualizado": "15:12"
+    "atualizado": "15:25"
   },
   {
     "ramal": "375",
     "nome": "Ian Silva",
-    "status": "Indisponivel",
-    "cor": "danger",
+    "status": "Disponivel",
+    "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "15:12"
+    "atualizado": "15:25"
   }
 ]
