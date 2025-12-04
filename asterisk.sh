@@ -1,143 +1,129 @@
 #!/bin/bash
 
-set -u 
+set -u
 
-# --- CONSTANTES E BINÁRIOS ---
+# --- 1. CONFIGURAÇÃO DE RAMAIS (EDITAR AQUI) ---
+# Formato: ["NUMERO"]="NOME_DO_USUARIO|INICIO_TURNO|FIM_TURNO"
+# Horario em formato HHMM (Ex: 0800 para 8h da manha, 1800 para 18h)
+declare -A CONFIG
+CONFIG["388"]="Gabriel Paixão|0705|1600"
+CONFIG["375"]="Ian Silva|0705|1600"
+CONFIG["387"]="Raiane Mendes|1330|2130"
+CONFIG["383"]="Lorrana Silva|1330|2130"
+CONFIG["382"]="Lucas Yuri|1330|2130"
+CONFIG["373"]="Wilson|1330|2130"
+
+
+# --- CONSTANTES ---
 ASTERISK_BIN="/usr/sbin/asterisk"
 DATE_BIN="/bin/date"
 AWK_BIN="/usr/bin/awk"
-MV_BIN="/bin/mv"
-CHMOD_BIN="/bin/chmod"
 FLOCK_BIN="/usr/bin/flock"
 
 # --- CAMINHOS ---
-# Ajuste conforme seu ambiente
-DIR_OUTPUT="/var/www/html"
+DIR_OUTPUT="/var/www/html" # Ou onde você salva o json localmente
 ARQUIVO_JSON="$DIR_OUTPUT/monitor.json"
 ARQUIVO_JSON_TMP="$DIR_OUTPUT/monitor.json.tmp"
 ARQUIVO_HISTORICO="/var/log/asterisk/monitor_historico.log"
 CDR_MASTER="/var/log/asterisk/cdr-csv/Master.csv"
 LOCK_FILE="/tmp/monitor_asterisk.lock"
+REPO_DIR="/opt/monitor-asterisk" # Pasta do Git
 
-# --- DATA E HORA ---
+# --- LOCK & DATA ---
+exec 200>"$LOCK_FILE"
+if ! $FLOCK_BIN -n 200; then exit 0; fi
+
 DATA_HOJE=$($DATE_BIN +%Y-%m-%d)
-HORA_ATUAL=$($DATE_BIN '+%H:%M')
+HORA_ATUAL_STR=$($DATE_BIN '+%H:%M')
+HORA_ATUAL_NUM=$($DATE_BIN '+%H%M') # Ex: 1430
 DATA_COMPLETA=$($DATE_BIN '+%F %T')
 
-# --- 1. LOCK (SINGLETON) ---
-
-exec 200>"$LOCK_FILE"
-if ! $FLOCK_BIN -n 200; then
-    echo "$DATA_COMPLETA | WARN | Tentativa de execucao simultanea abortada." >> "$ARQUIVO_HISTORICO"
-    exit 0
-fi
-
-# Garante existência do log
-touch "$ARQUIVO_HISTORICO"
-
 # --- 2. MAPA DE CHAMADAS ---
-declare -A CHAMADAS_MAP
+declare -A MAP_RX
+declare -A MAP_TX
 
 if [ -f "$CDR_MASTER" ]; then
 
-    while read -r RAMAL QTD; do
-        CHAMADAS_MAP["$RAMAL"]=$QTD
+    while read -r RAMAL TIPO QTD; do
+        if [ "$TIPO" == "RX" ]; then MAP_RX["$RAMAL"]=$QTD; fi
+        if [ "$TIPO" == "TX" ]; then MAP_TX["$RAMAL"]=$QTD; fi
     done < <($AWK_BIN -v d="$DATA_HOJE" -F',' '
-        # Filtra data (que geralmente está no começo da linha) e status ANSWERED
         index($0, d) && index($0, "ANSWERED") {
-            # Verifica apenas a coluna 6 (Destination Channel)
-            # Remove aspas se houver e busca padrao PJSIP
-            if ($6 ~ /PJSIP\//) {
-                split($6, a, "/");    # Divide PJSIP/300-00001
-                split(a[2], b, "-");  # Pega o 300 antes do traco
-                # Remove aspas duplas caso existam no CSV
-                gsub(/"/, "", b[1]);
-                count[b[1]]++;
+            # --- CHAMADAS RECEBIDAS (Onde o ramal é o destino/dstchannel) ---
+            # Procura PJSIP/RAMAL em qualquer lugar da linha (geralmente col 6 ou 7)
+            for(i=1;i<=NF;i++) {
+                if($i ~ /PJSIP\//) {
+                    split($i, a, "/"); split(a[2], b, "-"); gsub(/"/, "", b[1]);
+                    rx_count[b[1]]++;
+                }
+            }
+            # --- CHAMADAS FEITAS (Onde o ramal é a origem/src - Coluna 2) ---
+            src = $2; gsub(/"/, "", src);
+            if (src ~ /^[0-9]+$/) { # Se a origem for numero (ramal)
+                 tx_count[src]++;
             }
         }
-        END { for (r in count) print r, count[r] }
+        END { 
+            for (r in rx_count) print r, "RX", rx_count[r]
+            for (r in tx_count) print r, "TX", tx_count[r]
+        }
     ' "$CDR_MASTER")
 fi
 
-# --- 3. STATUS E GERAÇÃO JSON ---
+# --- 3. LOOP PRINCIPAL ---
 printf "[\n" > "$ARQUIVO_JSON_TMP"
-
 FIRST=1
 
-# Executa Asterisk UMA VEZ. Se falhar, define variável vazia para não quebrar o script.
-RAW_DATA=$($ASTERISK_BIN -rx "pjsip show endpoints" 2>/dev/null | grep "Endpoint:" || true)
+# Itera somente sobre os ramais definidos na CONFIG
+for RAMAL in "${!CONFIG[@]}"; do
+    
 
-while read -r LINE; do
-    # Pula linhas vazias
-    [ -z "$LINE" ] && continue
+    IFS='|' read -r NOME INICIO FIM <<< "${CONFIG[$RAMAL]}"
+    
 
-    # Extrai apenas o ID do Endpoint (Ramal)
-    RAMAL=$(echo "$LINE" | $AWK_BIN '{print $2}')
-
-    # --- VALIDAÇÃO DE SEGURANÇA ---
-    # Se o ramal não for numérico (ex: "anonymous", "trunk-oi"), pula.
-    if ! [[ "$RAMAL" =~ ^[0-9]+$ ]]; then
-        continue
-    fi
-
-    # Extrai Status (tudo após o ramal)
-    STATUS_RAW=$(echo "$LINE" | $AWK_BIN '{$1=""; $2=""; print $0}' | xargs)
-
-    # Normalização
-    if [[ "$STATUS_RAW" == *"Busy"* ]] || [[ "$STATUS_RAW" == *"In use"* ]]; then
-        STATUS="Ocupado"; COR="warning"
-    elif [[ "$STATUS_RAW" == *"Not in use"* ]] || [[ "$STATUS_RAW" == *"Avail"* ]]; then
-        STATUS="Disponivel"; COR="success"
+    if [[ "$HORA_ATUAL_NUM" -lt "$INICIO" ]] || [[ "$HORA_ATUAL_NUM" -gt "$FIM" ]]; then
+        STATUS="Fora de Horario"
+        COR="secondary" # Cinza
     else
-        STATUS="Indisponivel"; COR="danger"
-        # Loga falha se não for status desconhecido
-        if [[ "$STATUS_RAW" != "Unknown" ]]; then 
-             echo "$DATA_COMPLETA | RAMAL $RAMAL | FALHA | Status: $STATUS_RAW" >> "$ARQUIVO_HISTORICO"
+
+        STATUS_RAW=$($ASTERISK_BIN -rx "pjsip show endpoint $RAMAL" 2>/dev/null | grep "Device State" | $AWK_BIN '{print $3}')
+        
+        if [[ "$STATUS_RAW" == *"Busy"* ]] || [[ "$STATUS_RAW" == *"In use"* ]]; then
+            STATUS="Ocupado"; COR="warning"
+        elif [[ "$STATUS_RAW" == *"Not in use"* ]] || [[ "$STATUS_RAW" == *"Avail"* ]]; then
+            STATUS="Disponivel"; COR="success"
+        else
+            STATUS="Indisponivel"; COR="danger"
+
+            echo "$DATA_COMPLETA | RAMAL $RAMAL ($NOME) | FALHA | Status: Indisponivel" >> "$ARQUIVO_HISTORICO"
         fi
     fi
 
-    QTD_CHAMADAS=${CHAMADAS_MAP["$RAMAL"]:-0}
 
-    # Vírgula JSON
+    QTD_RX=${MAP_RX["$RAMAL"]:-0}
+    QTD_TX=${MAP_TX["$RAMAL"]:-0}
+
+    # Gera JSON
     if [ "$FIRST" -eq 0 ]; then printf ",\n" >> "$ARQUIVO_JSON_TMP"; fi
     FIRST=0
 
-    # Escrita segura
-    printf "  {\n    \"ramal\": \"%s\",\n    \"status\": \"%s\",\n    \"cor\": \"%s\",\n    \"chamadas\": \"%s\",\n    \"atualizado\": \"%s\"\n  }" \
-      "$RAMAL" "$STATUS" "$COR" "$QTD_CHAMADAS" "$HORA_ATUAL" >> "$ARQUIVO_JSON_TMP"
+    printf "  {\n    \"ramal\": \"%s\",\n    \"nome\": \"%s\",\n    \"status\": \"%s\",\n    \"cor\": \"%s\",\n    \"rx\": \"%s\",\n    \"tx\": \"%s\",\n    \"atualizado\": \"%s\"\n  }" \
+      "$RAMAL" "$NOME" "$STATUS" "$COR" "$QTD_RX" "$QTD_TX" "$HORA_ATUAL_STR" >> "$ARQUIVO_JSON_TMP"
 
-done <<< "$RAW_DATA"
+done
 
 printf "\n]\n" >> "$ARQUIVO_JSON_TMP"
 
-# --- 4. FINALIZAÇÃO ---
-$MV_BIN "$ARQUIVO_JSON_TMP" "$ARQUIVO_JSON"
+# --- 4. FINALIZAÇÃO E GITHUB ---
+mv "$ARQUIVO_JSON_TMP" "$ARQUIVO_JSON"
+chmod 644 "$ARQUIVO_JSON"
 
-# Permissões:
-# 644 permite que o dono (root) escreva e o grupo/outros (apache) leiam.
-$CHMOD_BIN 644 "$ARQUIVO_JSON"
-
-
-
-# --- BLOCO GITHUB PAGES ---
-
-# Caminho do seu repositório clonado
-REPO_DIR="/opt/monitor-asterisk"
-
-# 1. Copia o JSON E O LOG atualizados para a pasta do git
+# Copia para o Git
 cp "$ARQUIVO_JSON" "$REPO_DIR/monitor.json"
-cp "$ARQUIVO_HISTORICO" "$REPO_DIR/monitor_historico.log"  # <--- LINHA ADICIONADA
+cp "$ARQUIVO_HISTORICO" "$REPO_DIR/monitor_historico.log"
 
-# 2. Entra na pasta
+# Envia
 cd "$REPO_DIR" || exit
-
-# 3. Git Add, Commit e Push
-# Adiciona ambos os arquivos
-git add monitor.json monitor_historico.log                   # <--- LINHA ALTERADA
-git commit -m "Update: $HORA_ATUAL" || true
-
-# Envia para a nuvem (silenciosamente)
+git add monitor.json monitor_historico.log
+git commit -m "Update: $HORA_ATUAL_STR" || true
 git push origin main > /dev/null 2>&1
-
-# Opcional: Se quiser ver no log que enviou
-# echo "$DATA_COMPLETA | GITHUB | Dados enviados com sucesso" >> "$ARQUIVO_HISTORICO"
