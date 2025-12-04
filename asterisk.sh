@@ -86,7 +86,9 @@ for RAMAL in "${!CONFIG[@]}"; do
         COR="secondary" # Cinza
     else
 
-        STATUS_RAW=$($ASTERISK_BIN -rx "pjsip show endpoint $RAMAL" 2>/dev/null | grep "Device State" | $AWK_BIN '{print $3}')
+        STATUS_RAW=$($ASTERISK_BIN -rx "pjsip show endpoint $RAMAL" 2>/dev/null | grep "Device State" | $AWK_BIN '{print $3}') 
+        
+        $AWK_BIN '{print $3}')
         
         if [[ "$STATUS_RAW" == *"Busy"* ]] || [[ "$STATUS_RAW" == *"In use"* ]]; then
             STATUS="Ocupado"; COR="warning"
