@@ -45,7 +45,7 @@
 <div class="container mt-4 mb-5">
     <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
         <div>
-            <h2 class="mb-0">Monitoramento VoIP</h2>
+            <h2 class="mb-0">CENTRAL DE ATENDIMENTO GIUSOFT</h2>
             <small class="text-muted">
                 <span id="systemStatus" class="status-dot"></span>
                 Status da Conexão: <span id="statusText">Aguardando...</span>
@@ -54,3 +54,175 @@
         <button id="btnNotif" onclick="requestNotificationPermission()" class="btn btn-outline-primary btn-sm">
             Ativar Notificações
         </button>
+    </div>
+
+    <div class="row g-3" id="gridRamais">
+        <div class="col-12 text-center py-5">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2 text-muted">Carregando dados do servidor...</p>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <div class="d-flex justify-content-between align-items-end mb-2">
+            <h5 class="m-0">Histórico de Eventos</h5>
+            <small class="text-muted">Exibindo logs recentes</small>
+        </div>
+        <div id="logViewer">Carregando logs...</div>
+    </div>
+    
+    <div class="text-muted text-center mt-4 small">
+        Atualização automática a cada 3 minutos.<br>
+        Última sincronização: <span id="lastUpdate" class="fw-bold">-</span>
+    </div>
+</div>
+
+<script>
+    // --- CONFIGURAÇÃO ---
+    const UPDATE_INTERVAL = 60000; // Atualiza a cada 1 minuto para garantir
+    const URL_JSON = 'monitor.json'; 
+    const URL_LOG = 'monitor_historico.log'; 
+
+    let previousStatus = {}; 
+
+    // --- NOTIFICAÇÕES ---
+    function checkNotificationPermission() {
+        if (Notification.permission === "granted") {
+            document.getElementById('btnNotif').style.display = 'none';
+        }
+    }
+
+    function requestNotificationPermission() {
+        if (!("Notification" in window)) {
+            alert("Navegador sem suporte a notificações.");
+            return;
+        }
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                new Notification("Monitoramento Ativado!", { body: "Você será avisado se um ramal cair." });
+                checkNotificationPermission();
+            }
+        });
+    }
+
+    function sendNotification(ramal) {
+        if (Notification.permission === "granted") {
+            new Notification(`⚠️ ALERTA: Ramal ${ramal}`, {
+                body: `O ramal ${ramal} ficou INDISPONÍVEL!`,
+                requireInteraction: true,
+                icon: "https://cdn-icons-png.flaticon.com/512/564/564619.png"
+            });
+        }
+    }
+
+    // --- LÓGICA PRINCIPAL ---
+    async function fetchData() {
+        const timestamp = new Date().getTime(); // Evita cache
+        const statusDot = document.getElementById('systemStatus');
+        const statusText = document.getElementById('statusText');
+
+        try {
+            console.log("Buscando dados...");
+            // 1. Busca JSON
+            const response = await fetch(`${URL_JSON}?t=${timestamp}`);
+            
+            if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+            
+            const data = await response.json();
+            console.log("Dados recebidos:", data);
+            
+            // Ordena ramais numericamente
+            data.sort((a, b) => parseInt(a.ramal) - parseInt(b.ramal));
+
+            renderGrid(data);
+            
+            // Atualiza status UI
+            statusDot.className = "status-dot status-online";
+            statusText.innerText = "Online e Sincronizado";
+            document.getElementById('lastUpdate').innerText = new Date().toLocaleTimeString();
+
+        } catch (error) {
+            console.error("Falha ao buscar dados:", error);
+            statusDot.className = "status-dot status-error";
+            statusText.innerText = "Falha ao ler monitor.json";
+        }
+
+        // 2. Busca Log
+        fetchLogs(timestamp);
+    }
+
+    function renderGrid(data) {
+        const grid = document.getElementById('gridRamais');
+        grid.innerHTML = '';
+
+        if (data.length === 0) {
+            grid.innerHTML = '<div class="col-12 text-center text-muted">Nenhum ramal monitorado.</div>';
+            return;
+        }
+
+        data.forEach(item => {
+            // Verifica mudança de status para notificar
+            if (previousStatus[item.ramal] && previousStatus[item.ramal] !== 'Indisponivel' && item.status === 'Indisponivel') {
+                sendNotification(item.ramal);
+            }
+            previousStatus[item.ramal] = item.status;
+
+            // Define classes visuais
+            const isOffline = item.status === 'Indisponivel';
+            const cardClass = isOffline ? 'offline-blink' : '';
+            const badgeClass = isOffline ? 'bg-danger' : (item.status === 'Disponivel' ? 'bg-success' : 'bg-warning text-dark');
+
+            const html = `
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+                    <div class="card shadow-sm card-ramal ${cardClass}">
+                        <div class="card-body text-center p-3">
+                            <h4 class="card-title fw-bold mb-1">${item.ramal}</h4>
+                            <span class="badge ${badgeClass} mb-3 w-100">${item.status}</span>
+                            
+                            <div class="d-flex justify-content-between border-top pt-2 small text-muted">
+                                <span>📞 Chamadas:</span>
+                                <span class="fw-bold text-dark">${item.chamadas}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            grid.innerHTML += html;
+        });
+    }
+
+    async function fetchLogs(timestamp) {
+        const logViewer = document.getElementById('logViewer');
+        try {
+            const response = await fetch(`${URL_LOG}?t=${timestamp}`);
+            if (!response.ok) {
+                logViewer.innerHTML = '<span class="text-muted">Arquivo de log vazio ou não encontrado.</span>';
+                return;
+            }
+            
+            const text = await response.text();
+            
+            // Formata o texto para colorir erros
+            const formattedHTML = text.split('\n').map(line => {
+                if (!line.trim()) return '';
+                if (line.includes('FALHA') || line.includes('ERRO')) return `<span class="log-error">${line}</span>`;
+                if (line.includes('WARN')) return `<span class="log-warn">${line}</span>`;
+                return `<span class="log-info">${line}</span>`;
+            }).join('<br>');
+
+            logViewer.innerHTML = formattedHTML || '<span class="text-muted">Sem registros recentes.</span>';
+            logViewer.scrollTop = logViewer.scrollHeight;
+
+        } catch (e) {
+            console.log("Log error:", e);
+        }
+    }
+
+    // Inicialização
+    checkNotificationPermission();
+    fetchData(); // Chama a primeira vez imediatamente
+    setInterval(fetchData, UPDATE_INTERVAL); // Agenda repetição
+
+</script>
+</body>
+</html>
