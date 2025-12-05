@@ -44,8 +44,8 @@ for RAMAL in "${!CONFIG[@]}"; do
     IFS='|' read -r NOME INICIO FIM <<< "${CONFIG[$RAMAL]}"
 
     # Verifica Horário de Turno
-    if [[ "$HORA_ATUAL_NUM" -lt "$INICIO" ]] || [[ "$HORA_ATUAL_NUM" -gt "$FIM" ]]; then
-        STATUS="Fora de Horario"
+    if (( 10#$HORA_ATUAL_NUM < 10#$INICIO )) || (( 10#$HORA_ATUAL_NUM > 10#$FIM )); then
+        STATUS="OFF"
         COR="secondary"
     else
 
