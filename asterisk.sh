@@ -3,6 +3,13 @@
 
 set -u
 
+DIA_SEMANA=$(date +%u)
+
+if [ "$DIA_SEMANA" -gt 5 ]; then
+
+    exit 0
+fi
+
 # --- 1. CONFIGURAÇÃO DE RAMAIS ---
 # Formato: ["NUMERO"]="NOME_DO_USUARIO|INICIO_TURNO|FIM_TURNO"
 declare -A CONFIG
