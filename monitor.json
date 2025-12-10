@@ -6,16 +6,16 @@
     "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "14:40"
+    "atualizado": "14:59"
   },
   {
     "ramal": "382",
     "nome": "Lucas Yuri",
-    "status": "Indisponivel",
-    "cor": "danger",
+    "status": "OFF",
+    "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "14:40"
+    "atualizado": "14:59"
   },
   {
     "ramal": "383",
@@ -24,7 +24,7 @@
     "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "14:40"
+    "atualizado": "14:59"
   },
   {
     "ramal": "388",
@@ -33,7 +33,7 @@
     "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "14:40"
+    "atualizado": "14:59"
   },
   {
     "ramal": "373",
@@ -42,7 +42,7 @@
     "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "14:40"
+    "atualizado": "14:59"
   },
   {
     "ramal": "375",
@@ -51,6 +51,6 @@
     "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "14:40"
+    "atualizado": "14:59"
   }
 ]
