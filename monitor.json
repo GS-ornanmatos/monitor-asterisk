@@ -6,7 +6,7 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "08:40"
+    "atualizado": "09:00"
   },
   {
     "ramal": "382",
@@ -15,7 +15,7 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "08:40"
+    "atualizado": "09:00"
   },
   {
     "ramal": "383",
@@ -24,7 +24,7 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "08:40"
+    "atualizado": "09:00"
   },
   {
     "ramal": "388",
@@ -33,7 +33,7 @@
     "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "08:40"
+    "atualizado": "09:00"
   },
   {
     "ramal": "373",
@@ -42,15 +42,15 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "08:40"
+    "atualizado": "09:00"
   },
   {
     "ramal": "375",
     "nome": "Ian Silva",
-    "status": "Disponivel",
-    "cor": "success",
+    "status": "Indisponivel",
+    "cor": "danger",
     "rx": "0",
     "tx": "0",
-    "atualizado": "08:40"
+    "atualizado": "09:00"
   }
 ]
