@@ -6,7 +6,7 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "10:00"
+    "atualizado": "10:20"
   },
   {
     "ramal": "382",
@@ -15,7 +15,7 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "10:00"
+    "atualizado": "10:20"
   },
   {
     "ramal": "383",
@@ -24,16 +24,16 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "10:00"
+    "atualizado": "10:20"
   },
   {
     "ramal": "388",
     "nome": "Gabriel Paixão",
-    "status": "Indisponivel",
-    "cor": "danger",
+    "status": "Disponivel",
+    "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "10:00"
+    "atualizado": "10:20"
   },
   {
     "ramal": "373",
@@ -42,7 +42,7 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "10:00"
+    "atualizado": "10:20"
   },
   {
     "ramal": "375",
@@ -51,6 +51,6 @@
     "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "10:00"
+    "atualizado": "10:20"
   }
 ]
