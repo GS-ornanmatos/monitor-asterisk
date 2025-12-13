@@ -6,7 +6,7 @@
     "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "21:00"
+    "atualizado": "21:20"
   },
   {
     "ramal": "382",
@@ -15,7 +15,7 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "21:00"
+    "atualizado": "21:20"
   },
   {
     "ramal": "383",
@@ -24,7 +24,7 @@
     "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "21:00"
+    "atualizado": "21:20"
   },
   {
     "ramal": "388",
@@ -33,16 +33,16 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "21:00"
+    "atualizado": "21:20"
   },
   {
     "ramal": "373",
     "nome": "Wilson",
-    "status": "Disponivel",
-    "cor": "success",
+    "status": "Indisponivel",
+    "cor": "danger",
     "rx": "0",
     "tx": "0",
-    "atualizado": "21:00"
+    "atualizado": "21:20"
   },
   {
     "ramal": "375",
@@ -51,6 +51,6 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "21:00"
+    "atualizado": "21:20"
   }
 ]
