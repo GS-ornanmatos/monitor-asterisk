@@ -1,56 +1,38 @@
 [
   {
-    "ramal": "373",
-    "nome": "Wilson",
-    "status": "OFF",
-    "cor": "secondary",
-    "rx": "0",
-    "tx": "0",
-    "atualizado": "10:08"
-  },
-  {
-    "ramal": "375",
-    "nome": "Ian Silva",
-    "status": "Indisponivel",
-    "cor": "danger",
-    "rx": "0",
-    "tx": "0",
-    "atualizado": "10:08"
-  },
-  {
-    "ramal": "387",
-    "nome": "Raiane Mendes",
-    "status": "OFF",
-    "cor": "secondary",
-    "rx": "0",
-    "tx": "0",
-    "atualizado": "10:08"
-  },
-  {
-    "ramal": "382",
-    "nome": "Lucas Yuri",
-    "status": "OFF",
-    "cor": "secondary",
-    "rx": "0",
-    "tx": "0",
-    "atualizado": "10:08"
-  },
-  {
-    "ramal": "383",
-    "nome": "Lorrana Silva",
-    "status": "OFF",
-    "cor": "secondary",
-    "rx": "0",
-    "tx": "0",
-    "atualizado": "10:08"
-  },
-  {
-    "ramal": "388",
+    "ramal": "305",
     "nome": "Gabriel Paixão",
     "status": "Indisponivel",
     "cor": "danger",
     "rx": "0",
     "tx": "0",
-    "atualizado": "10:08"
+    "atualizado": "10:10"
+  },
+  {
+    "ramal": "300",
+    "nome": "Raiane Mendes",
+    "status": "OFF",
+    "cor": "secondary",
+    "rx": "0",
+    "tx": "0",
+    "atualizado": "10:10"
+  },
+  {
+    "ramal": "301",
+    "nome": "Lucas Yuri",
+    "status": "OFF",
+    "cor": "secondary",
+    "rx": "0",
+    "tx": "0",
+    "atualizado": "10:10"
+  },
+  {
+    "ramal": "303",
+    "nome": "Ian Lucas",
+    "status": "Indisponivel",
+    "cor": "danger",
+    "rx": "0",
+    "tx": "0",
+    "atualizado": "10:10"
   }
 ]
