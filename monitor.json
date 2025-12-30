@@ -1,12 +1,21 @@
 [
   {
-    "ramal": "305",
-    "nome": "Gabriel Paixão",
+    "ramal": "310",
+    "nome": "Ornan Matos",
     "status": "Indisponivel",
     "cor": "danger",
     "rx": "0",
     "tx": "0",
-    "atualizado": "10:10"
+    "atualizado": "10:16"
+  },
+  {
+    "ramal": "305",
+    "nome": "Gabriel Paixão",
+    "status": "OFF",
+    "cor": "secondary",
+    "rx": "0",
+    "tx": "0",
+    "atualizado": "10:16"
   },
   {
     "ramal": "300",
@@ -15,7 +24,7 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "10:10"
+    "atualizado": "10:16"
   },
   {
     "ramal": "301",
@@ -24,15 +33,15 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "10:10"
+    "atualizado": "10:16"
   },
   {
     "ramal": "303",
     "nome": "Ian Lucas",
-    "status": "Indisponivel",
-    "cor": "danger",
+    "status": "OFF",
+    "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "10:10"
+    "atualizado": "10:16"
   }
 ]
