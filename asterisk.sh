@@ -13,12 +13,11 @@ fi
 # --- 1. CONFIGURAÇÃO DE RAMAIS ---
 # Formato: ["NUMERO"]="NOME_DO_USUARIO|INICIO_TURNO|FIM_TURNO"
 declare -A CONFIG
-CONFIG["388"]="Gabriel Paixão|0705|1600"
-CONFIG["375"]="Ian Silva|0705|1600"
+CONFIG["388"]="Gabriel Paixão|0705|1555"
+CONFIG["375"]="Ian Silva|0705|1555"
 CONFIG["387"]="Raiane Mendes|1330|2130"
 CONFIG["383"]="Lorrana Silva|1330|2130"
 CONFIG["382"]="Lucas Yuri|1330|2130"
-CONFIG["373"]="Wilson|1330|2130"
 
 # --- CONSTANTES ---
 ASTERISK_BIN="/usr/sbin/asterisk"
