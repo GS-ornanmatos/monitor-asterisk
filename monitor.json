@@ -6,34 +6,34 @@
     "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "13:20"
+    "atualizado": "13:40"
   },
   {
     "ramal": "300",
     "nome": "Raiane Mendes",
-    "status": "OFF",
-    "cor": "secondary",
+    "status": "Indisponivel",
+    "cor": "danger",
     "rx": "0",
     "tx": "0",
-    "atualizado": "13:20"
+    "atualizado": "13:40"
   },
   {
     "ramal": "301",
     "nome": "Lucas Yuri",
-    "status": "OFF",
-    "cor": "secondary",
+    "status": "Indisponivel",
+    "cor": "danger",
     "rx": "0",
     "tx": "0",
-    "atualizado": "13:20"
+    "atualizado": "13:40"
   },
   {
     "ramal": "302",
     "nome": "Lorrana Silva",
-    "status": "OFF",
-    "cor": "secondary",
+    "status": "Indisponivel",
+    "cor": "danger",
     "rx": "0",
     "tx": "0",
-    "atualizado": "13:20"
+    "atualizado": "13:40"
   },
   {
     "ramal": "303",
@@ -42,6 +42,6 @@
     "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "13:20"
+    "atualizado": "13:40"
   }
 ]
