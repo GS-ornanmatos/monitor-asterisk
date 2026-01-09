@@ -6,7 +6,7 @@
     "cor": "danger",
     "rx": "0",
     "tx": "0",
-    "atualizado": "08:02"
+    "atualizado": "08:20"
   },
   {
     "ramal": "300",
@@ -15,7 +15,7 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "08:02"
+    "atualizado": "08:20"
   },
   {
     "ramal": "301",
@@ -24,15 +24,15 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "08:02"
+    "atualizado": "08:20"
   },
   {
     "ramal": "303",
     "nome": "Ian Silva",
-    "status": "Indisponivel",
-    "cor": "danger",
+    "status": "Disponivel",
+    "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "08:02"
+    "atualizado": "08:20"
   }
 ]
