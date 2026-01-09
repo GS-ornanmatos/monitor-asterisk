@@ -2,11 +2,11 @@
   {
     "ramal": "305",
     "nome": "Gabriel Paixão",
-    "status": "Indisponivel",
-    "cor": "danger",
+    "status": "OFF",
+    "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "15:40"
+    "atualizado": "16:00"
   },
   {
     "ramal": "300",
@@ -15,7 +15,7 @@
     "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "15:40"
+    "atualizado": "16:00"
   },
   {
     "ramal": "301",
@@ -24,15 +24,15 @@
     "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "15:40"
+    "atualizado": "16:00"
   },
   {
     "ramal": "303",
     "nome": "Ian Silva",
-    "status": "Indisponivel",
-    "cor": "danger",
+    "status": "OFF",
+    "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "15:40"
+    "atualizado": "16:00"
   }
 ]
