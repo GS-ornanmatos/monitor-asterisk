@@ -6,16 +6,16 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "17:00"
+    "atualizado": "17:20"
   },
   {
     "ramal": "300",
     "nome": "Raiane Mendes",
-    "status": "Indisponivel",
-    "cor": "danger",
+    "status": "Disponivel",
+    "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "17:00"
+    "atualizado": "17:20"
   },
   {
     "ramal": "301",
@@ -24,7 +24,7 @@
     "cor": "danger",
     "rx": "0",
     "tx": "0",
-    "atualizado": "17:00"
+    "atualizado": "17:20"
   },
   {
     "ramal": "303",
@@ -33,6 +33,6 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "17:00"
+    "atualizado": "17:20"
   }
 ]
