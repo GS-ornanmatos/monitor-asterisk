@@ -6,7 +6,7 @@
     "cor": "danger",
     "rx": "0",
     "tx": "0",
-    "atualizado": "14:40"
+    "atualizado": "15:00"
   },
   {
     "ramal": "300",
@@ -15,16 +15,16 @@
     "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "14:40"
+    "atualizado": "15:00"
   },
   {
     "ramal": "301",
     "nome": "Lucas Yuri",
-    "status": "Disponivel",
-    "cor": "success",
+    "status": "Indisponivel",
+    "cor": "danger",
     "rx": "0",
     "tx": "0",
-    "atualizado": "14:40"
+    "atualizado": "15:00"
   },
   {
     "ramal": "303",
@@ -33,6 +33,6 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "14:40"
+    "atualizado": "15:00"
   }
 ]
