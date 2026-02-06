@@ -2,11 +2,11 @@
   {
     "ramal": "305",
     "nome": "Gabriel Paixão",
-    "status": "Disponivel",
-    "cor": "success",
+    "status": "Indisponivel",
+    "cor": "danger",
     "rx": "0",
     "tx": "0",
-    "atualizado": "13:40"
+    "atualizado": "14:00"
   },
   {
     "ramal": "301",
@@ -15,7 +15,7 @@
     "cor": "danger",
     "rx": "0",
     "tx": "0",
-    "atualizado": "13:40"
+    "atualizado": "14:00"
   },
   {
     "ramal": "303",
@@ -24,6 +24,6 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "13:40"
+    "atualizado": "14:00"
   }
 ]
