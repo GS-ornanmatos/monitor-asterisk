@@ -15,7 +15,7 @@ fi
 declare -A CONFIG
 CONFIG["305"]="Gabriel Paixão|0705|1520"
 CONFIG["303"]="Ian Silva|2355|2356"
-CONFIG["300"]="Raiane Mendes|1330|1950"
+#CONFIG["300"]="Raiane Mendes|1330|1950"
 CONFIG["301"]="Lucas Yuri|1330|1950"
 
 # --- CONSTANTES ---
