@@ -6,16 +6,16 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "16:20"
+    "atualizado": "16:40"
   },
   {
     "ramal": "301",
     "nome": "Lucas Yuri",
-    "status": "Indisponivel",
-    "cor": "danger",
+    "status": "Disponivel",
+    "cor": "success",
     "rx": "0",
     "tx": "0",
-    "atualizado": "16:20"
+    "atualizado": "16:40"
   },
   {
     "ramal": "303",
@@ -24,6 +24,6 @@
     "cor": "secondary",
     "rx": "0",
     "tx": "0",
-    "atualizado": "16:20"
+    "atualizado": "16:40"
   }
 ]
